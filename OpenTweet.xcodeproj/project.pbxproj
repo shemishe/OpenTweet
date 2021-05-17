@@ -31,6 +31,7 @@
 		E9471A2C2650EDCC00295FD3 /* TimelineLinkPreviewTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9471A2B2650EDCC00295FD3 /* TimelineLinkPreviewTableViewCell.swift */; };
 		E9471A302651914E00295FD3 /* TimelineDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9471A2F2651914E00295FD3 /* TimelineDetailViewController.swift */; };
 		E9471A322651936300295FD3 /* Protocols.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9471A312651936300295FD3 /* Protocols.swift */; };
+		E9471A34265228A200295FD3 /* UIImageView+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9471A33265228A200295FD3 /* UIImageView+Extensions.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -82,6 +83,7 @@
 		E9471A2B2650EDCC00295FD3 /* TimelineLinkPreviewTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimelineLinkPreviewTableViewCell.swift; sourceTree = "<group>"; };
 		E9471A2F2651914E00295FD3 /* TimelineDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimelineDetailViewController.swift; sourceTree = "<group>"; };
 		E9471A312651936300295FD3 /* Protocols.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Protocols.swift; sourceTree = "<group>"; };
+		E9471A33265228A200295FD3 /* UIImageView+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImageView+Extensions.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -191,6 +193,7 @@
 			children = (
 				E94719D9265090F300295FD3 /* UIView+Extensions.swift */,
 				E9471A27265098C700295FD3 /* UIColor+Extensions.swift */,
+				E9471A33265228A200295FD3 /* UIImageView+Extensions.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -385,6 +388,7 @@
 				E94719DE2650911D00295FD3 /* TimelineTableView.swift in Sources */,
 				E9471A322651936300295FD3 /* Protocols.swift in Sources */,
 				E9471A202650963F00295FD3 /* MainTabBarController.swift in Sources */,
+				E9471A34265228A200295FD3 /* UIImageView+Extensions.swift in Sources */,
 				E94719E22650929F00295FD3 /* SceneDelegate.swift in Sources */,
 				E94719D6265090D000295FD3 /* Alert.swift in Sources */,
 				009C4C6E1D9F0CD600F0BC6C /* TimelineViewController.swift in Sources */,

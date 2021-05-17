@@ -16,11 +16,12 @@ class TimelineTableViewCell: UITableViewCell {
     // MARK: - Properties
     
     lazy var avatar: UIImageView = {
-        let iv = UIImageView(image: K.Images.openTable)
+        let iv = UIImageView()
         iv.contentMode = .scaleAspectFit
         iv.backgroundColor = K.Colors.white
         iv.layer.borderWidth = 1
         iv.layer.borderColor = K.Colors.mainAppColor.cgColor
+        iv.clipsToBounds = true
         return iv
     }()
     
@@ -51,6 +52,10 @@ class TimelineTableViewCell: UITableViewCell {
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    
+    override func prepareForReuse() {
+        super.prepareForReuse()
     }
     
     // MARK: - Helper Functions
@@ -113,43 +118,22 @@ class TimelineTableViewCell: UITableViewCell {
     }
 }
 
-/* Cell configuration with timeline tweet data */
+// MARK: - Cell Configuration With Timeline Data
+
 extension TimelineTableViewCell {
     
     func configureCell(with timelineTweet: TimelineTweet) {
         username.text = timelineTweet.author
         timestamp.text = timestampConverter(timestamp: timelineTweet.date)
         content.text = timelineTweet.content
+        
+        // If timeline tweet data contains avatar data, parse image data, otherwise use default image
+        if timelineTweet.avatar != nil {
+            guard let avatarURLString = timelineTweet.avatar else { return }
+            guard let avatarURL = URL(string: avatarURLString) else { return }
+            avatar.downloadImage(from: avatarURL)
+        } else {
+            avatar.image = K.Images.openTable
+        }
     }
-    
-//    func configureCellWithLinkPreview(with timelineTweet: TimelineTweet, hyperlink: URL?) {
-//        username.text = timelineTweet.author
-//        timestamp.text = timestampConverter(timestamp: timelineTweet.date)
-//
-//        if let hyperlink = hyperlink {
-//            let linkPreview = LPLinkView()
-//            let provider = LPMetadataProvider()
-//            provider.startFetchingMetadata(for: hyperlink) { [weak self] metadata, error in
-//                guard let data = metadata, error == nil else {
-//                    print("error handling for link preview")
-//                    return
-//                }
-//
-//                DispatchQueue.main.async {
-//                    linkPreview.metadata = data
-//                    self?.addSubview(linkPreview)
-//                    linkPreview.anchorWithConstant(top: <#T##NSLayoutYAxisAnchor?#>,
-//                                                   bottom: <#T##NSLayoutYAxisAnchor?#>,
-//                                                   leading: <#T##NSLayoutXAxisAnchor?#>,
-//                                                   trailing: <#T##NSLayoutXAxisAnchor?#>,
-//                                                   paddingTop: <#T##CGFloat#>,
-//                                                   paddingBottom: <#T##CGFloat#>,
-//                                                   paddingLeading: <#T##CGFloat#>,
-//                                                   paddingTrailing: <#T##CGFloat#>,
-//                                                   width: <#T##CGFloat#>,
-//                                                   height: <#T##CGFloat#>)
-//                }
-//            }
-//        }
-//    }
 }

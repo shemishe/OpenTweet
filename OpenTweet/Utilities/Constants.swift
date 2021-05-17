@@ -53,5 +53,7 @@ struct K {
     
     struct Alert {
         static let okTitle = "OK"
+        static let blockTitle = "Block"
+        static let cancelTitle = "Cancel"
     }
 }

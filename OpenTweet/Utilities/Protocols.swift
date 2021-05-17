@@ -11,3 +11,7 @@ import Foundation
 protocol TransitionToTimelineDetailViewControllerDelegate: AnyObject {
     func presentDetailViewController(with timelineTweet: TimelineTweet)
 }
+
+protocol AlertDelegate: AnyObject {
+    func showAlert(with userToBlock: String)
+}

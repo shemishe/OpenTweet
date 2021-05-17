@@ -13,6 +13,7 @@ class TimelineTableView: UITableView {
     // MARK: - Properties
     
     weak var transitionToTimelineDetailViewControllerDelegate: TransitionToTimelineDetailViewControllerDelegate?
+    weak var alertDelegate: AlertDelegate?
     
     var timelineData: TimelineData?
     
@@ -84,6 +85,8 @@ extension TimelineTableView: UITableViewDelegate, UITableViewDataSource {
 extension TimelineTableView {
     func tableView(_ tableView: UITableView, contextMenuConfigurationForRowAt indexPath: IndexPath, point: CGPoint) -> UIContextMenuConfiguration? {
         
+        let author = timelineData?.timeline[indexPath.row].author
+        
         let config = UIContextMenuConfiguration(identifier: nil,
                                                 previewProvider: nil) { _ in
             
@@ -99,8 +102,8 @@ extension TimelineTableView {
                 print("I SAVED THIS")
             }
             
-            let blockAction = UIAction(title: "Block", image: K.Icons.block) { _ in
-                print("I RETWEETED THIS")
+            let blockAction = UIAction(title: "Block", image: K.Icons.block) { [weak self] _ in
+                self?.alertDelegate?.showAlert(with: author ?? "User")
             }
             
             let reportAction  = UIAction(title: "Report this post", image: K.Icons.report) { _ in

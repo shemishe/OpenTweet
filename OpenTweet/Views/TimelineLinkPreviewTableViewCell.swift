@@ -16,11 +16,12 @@ class TimelineLinkPreviewTableViewCell: UITableViewCell {
     // MARK: - Properties
     
     lazy var avatar: UIImageView = {
-        let iv = UIImageView(image: K.Images.openTable)
+        let iv = UIImageView()
         iv.contentMode = .scaleAspectFit
         iv.backgroundColor = K.Colors.white
         iv.layer.borderWidth = 1
         iv.layer.borderColor = K.Colors.mainAppColor.cgColor
+        iv.clipsToBounds = true
         return iv
     }()
     
@@ -138,6 +139,16 @@ extension TimelineLinkPreviewTableViewCell {
         timestamp.text = timestampConverter(timestamp: timelineTweet.date)
         content.text = timelineTweet.content
         
+        // If timeline tweet data contains avatar data, parse image data, otherwise use default image
+        if timelineTweet.avatar != nil {
+            guard let avatarURLString = timelineTweet.avatar else { return }
+            guard let avatarURL = URL(string: avatarURLString) else { return }
+            avatar.downloadImage(from: avatarURL)
+        } else {
+            avatar.image = K.Images.openTable
+        }
+        
+        // Fetching metadata from hyperlink to present a Link Preview
         if let hyperlink = hyperlink {
             let linkPreview = LPLinkView()
             let provider = LPMetadataProvider()

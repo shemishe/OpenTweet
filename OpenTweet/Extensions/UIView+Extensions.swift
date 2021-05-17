@@ -8,6 +8,8 @@
 
 import UIKit
 
+// MARK: - Functions to Simplify Auto Layout
+
 extension UIView {
     func centerXY(inView view: UIView) {
         self.translatesAutoresizingMaskIntoConstraints = false
