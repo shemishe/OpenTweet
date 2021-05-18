@@ -25,10 +25,12 @@ class TimelineLinkPreviewTableViewCell: UITableViewCell {
         return iv
     }()
     
-    lazy var username: UILabel = {
-        let label = UILabel()
-        label.textColor = K.Colors.mainAppColor
-        return label
+    lazy var usernameButton: UIButton = {
+        let button = UIButton()
+        button.setTitleColor(K.Colors.mainAppColor, for: .normal)
+        button.contentHorizontalAlignment = .left
+        button.contentEdgeInsets = UIEdgeInsets(top: 0, left: 0.001, bottom: 0.001, right: 0)
+        return button
     }()
     
     lazy var timestamp: UILabel = {
@@ -48,12 +50,17 @@ class TimelineLinkPreviewTableViewCell: UITableViewCell {
         let lp = LPLinkView()
         return lp
     }()
+    
+    // MARK: - Closures
+    
+    var usernameButtonTapped: (() -> Void)?
 
     // MARK: - Initializers
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         configureViewCellComponents()
+        configureButtonActions()
     }
     
     required init?(coder: NSCoder) {
@@ -62,11 +69,16 @@ class TimelineLinkPreviewTableViewCell: UITableViewCell {
     
     // MARK: - Helper Functions
     
+    func configureButtonActions() {
+        usernameButton.addTarget(self, action: #selector(handleUsernameButtonTapped), for: .touchUpInside)
+    }
+    
     private func configureViewCellComponents() {
         backgroundColor = K.Colors.white
 
         let defaultPadding = K.Layout.defaultSidePadding()
         let halfPadding: CGFloat = 8
+        let minimumPadding: CGFloat = 4
         let avatarSize: CGFloat = 50
         
         contentView.addSubview(avatar)
@@ -82,24 +94,24 @@ class TimelineLinkPreviewTableViewCell: UITableViewCell {
                                   height: avatarSize)
         avatar.layer.cornerRadius = avatarSize / 2
         
-        contentView.addSubview(username)
-        username.anchorWithConstant(top: avatar.topAnchor,
-                                    bottom: nil,
-                                    leading: avatar.trailingAnchor,
-                                    trailing: contentView.trailingAnchor,
-                                    paddingTop: 0,
-                                    paddingBottom: 0,
-                                    paddingLeading: halfPadding,
-                                    paddingTrailing: defaultPadding,
-                                    width: 0,
-                                    height: 0)
+        contentView.addSubview(usernameButton)
+        usernameButton.anchorWithConstant(top: avatar.topAnchor,
+                                          bottom: nil,
+                                          leading: avatar.trailingAnchor,
+                                          trailing: contentView.trailingAnchor,
+                                          paddingTop: 0,
+                                          paddingBottom: 0,
+                                          paddingLeading: halfPadding,
+                                          paddingTrailing: defaultPadding,
+                                          width: 0,
+                                          height: 0)
         
         contentView.addSubview(timestamp)
-        timestamp.anchorWithConstant(top: username.bottomAnchor,
+        timestamp.anchorWithConstant(top: usernameButton.bottomAnchor,
                                      bottom: nil,
-                                     leading: username.leadingAnchor,
-                                     trailing: username.trailingAnchor,
-                                     paddingTop: halfPadding,
+                                     leading: usernameButton.leadingAnchor,
+                                     trailing: usernameButton.trailingAnchor,
+                                     paddingTop: minimumPadding,
                                      paddingBottom: 0,
                                      paddingLeading: 0,
                                      paddingTrailing: 0,
@@ -109,9 +121,9 @@ class TimelineLinkPreviewTableViewCell: UITableViewCell {
         contentView.addSubview(content)
         content.anchorWithConstant(top: timestamp.bottomAnchor,
                                    bottom: nil,
-                                   leading: username.leadingAnchor,
-                                   trailing: username.trailingAnchor,
-                                   paddingTop: halfPadding,
+                                   leading: usernameButton.leadingAnchor,
+                                   trailing: usernameButton.trailingAnchor,
+                                   paddingTop: minimumPadding,
                                    paddingBottom: 0,
                                    paddingLeading: 0,
                                    paddingTrailing: 0,
@@ -121,8 +133,8 @@ class TimelineLinkPreviewTableViewCell: UITableViewCell {
         contentView.addSubview(linkPreview)
         linkPreview.anchorWithConstant(top: content.bottomAnchor,
                                        bottom: contentView.bottomAnchor,
-                                       leading: username.leadingAnchor,
-                                       trailing: username.trailingAnchor,
+                                       leading: usernameButton.leadingAnchor,
+                                       trailing: usernameButton.trailingAnchor,
                                        paddingTop: halfPadding,
                                        paddingBottom: halfPadding,
                                        paddingLeading: 0,
@@ -135,7 +147,8 @@ class TimelineLinkPreviewTableViewCell: UITableViewCell {
 /* Cell configuration with timeline tweet data */
 extension TimelineLinkPreviewTableViewCell {
     func configureCellWithLinkPreview(with timelineTweet: TimelineTweet, hyperlink: URL?) {
-        username.text = timelineTweet.author
+        usernameButton.setTitle(timelineTweet.author, for: .normal)
+//        username.text = timelineTweet.author
         timestamp.text = timestampConverter(timestamp: timelineTweet.date)
         content.text = timelineTweet.content
         
@@ -164,5 +177,13 @@ extension TimelineLinkPreviewTableViewCell {
                 }
             }
         }
+    }
+}
+
+// MARK: - Selectors
+
+extension TimelineLinkPreviewTableViewCell {
+    @objc func handleUsernameButtonTapped() {
+        usernameButtonTapped?()
     }
 }

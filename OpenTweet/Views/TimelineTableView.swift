@@ -13,6 +13,7 @@ class TimelineTableView: UITableView {
     // MARK: - Properties
     
     weak var transitionToTimelineDetailViewControllerDelegate: TransitionToTimelineDetailViewControllerDelegate?
+    weak var transitionToUserProfileViewControllerDelegate: TransitionToUserProfileViewControllerDelegate?
     weak var alertDelegate: AlertDelegate?
     
     var timelineData: TimelineData?
@@ -43,6 +44,12 @@ class TimelineTableView: UITableView {
         backgroundView = bgView
         tableFooterView = UIView()
         separatorInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
+        
+        // Top separator line for first cell
+        let pixel = 1 / UIScreen.main.scale
+        let line = UIView(frame: CGRect(x: 0, y: 0, width: K.Layout.screenWidth, height: pixel))
+        tableHeaderView = line
+        line.backgroundColor = separatorColor
     }
 }
 
@@ -61,9 +68,15 @@ extension TimelineTableView: UITableViewDelegate, UITableViewDataSource {
             
             if hyperlink == nil {
                 regularCell.configureCell(with: timelineData)
+                regularCell.usernameButtonTapped = {
+                    self.transitionToUserProfileViewControllerDelegate?.presentUserProfileViewController(with: timelineData.author)
+                }
                 return regularCell
             } else {
                 linkPreviewCell.configureCellWithLinkPreview(with: timelineData, hyperlink: hyperlink)
+                linkPreviewCell.usernameButtonTapped = {
+                    self.transitionToUserProfileViewControllerDelegate?.presentUserProfileViewController(with: timelineData.author)
+                }
                 return linkPreviewCell
             }
         }

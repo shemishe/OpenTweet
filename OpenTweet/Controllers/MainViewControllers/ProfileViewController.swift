@@ -17,6 +17,7 @@ class ProfileViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        configureNavBar()
         configureViewComponents()
     }
     
@@ -24,5 +25,11 @@ class ProfileViewController: UIViewController {
     
     private func configureViewComponents() {
         
+    }
+    
+    private func configureNavBar() {
+        navigationItem.title = "Profile"
+        let textAttributes = [NSAttributedString.Key.foregroundColor: K.Colors.mainAppColor]
+        navigationController?.navigationBar.titleTextAttributes = textAttributes
     }
 }

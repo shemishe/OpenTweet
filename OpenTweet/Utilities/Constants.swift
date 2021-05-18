@@ -21,6 +21,7 @@ struct K {
         static let mainAppColor = UIColor.mainRed()
         static let white = UIColor.white
         static let black = UIColor.black
+        static let lightGray = UIColor.lightGray
     }
     
     struct JSON {
@@ -55,5 +56,7 @@ struct K {
         static let okTitle = "OK"
         static let blockTitle = "Block"
         static let cancelTitle = "Cancel"
+        static let errorTitle = "Error"
+        static let invalidPathMessage = "Data path is invalid."
     }
 }

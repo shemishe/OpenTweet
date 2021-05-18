@@ -17,6 +17,7 @@ class SearchViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        configureNavBar()
         configureViewComponents()
     }
     
@@ -24,5 +25,11 @@ class SearchViewController: UIViewController {
     
     private func configureViewComponents() {
         
+    }
+    
+    private func configureNavBar() {
+        navigationItem.title = "Search"
+        let textAttributes = [NSAttributedString.Key.foregroundColor: K.Colors.mainAppColor]
+        navigationController?.navigationBar.titleTextAttributes = textAttributes
     }
 }

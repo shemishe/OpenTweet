@@ -21,7 +21,6 @@ class TimelineViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        parseJSON()
         configureNavBar()
         configureTableView()
     }
@@ -30,6 +29,7 @@ class TimelineViewController: UIViewController {
 
     private func configureTableView() {
         tableView.transitionToTimelineDetailViewControllerDelegate = self
+        tableView.transitionToUserProfileViewControllerDelegate = self
         tableView.alertDelegate = self
         
         view.addSubview(tableView)
@@ -52,34 +52,22 @@ class TimelineViewController: UIViewController {
     }
 }
 
-// MARK: - Parsing JSON
-
-extension TimelineViewController {
-    private func parseJSON() {
-        guard let jsonPath = Bundle.main.path(forResource: K.JSON.timeline, ofType: K.JSON.json) else {
-            Alert.showDefaultAlert(title: "Error", message: "No JSON data exists", vc: self)
-            return
-        }
-        
-        let jsonURL = URL(fileURLWithPath: jsonPath)
-        
-        do {
-            let jsonData = try Data(contentsOf: jsonURL)
-            tableView.timelineData = try JSONDecoder().decode(TimelineData.self, from: jsonData)
-        } catch {
-            print("catch block error")
-            print(error)
-        }
-    }
-}
-
-
 // MARK: - Timeline Detail View Controller Delegate
 
 extension TimelineViewController: TransitionToTimelineDetailViewControllerDelegate {
     func presentDetailViewController(with timelineTweet: TimelineTweet) {
         let vc = TimelineDetailViewController()
         vc.timelineTweet = timelineTweet
+        self.navigationController?.pushViewController(vc, animated: true)
+    }
+}
+
+// MARK: - User Profile View Controller Delegate
+
+extension TimelineViewController: TransitionToUserProfileViewControllerDelegate {
+    func presentUserProfileViewController(with username: String) {
+        let vc = UserProfileViewController()
+        vc.username = username
         self.navigationController?.pushViewController(vc, animated: true)
     }
 }

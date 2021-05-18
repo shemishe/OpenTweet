@@ -39,6 +39,11 @@ class MainTabBarController: UITabBarController, UITabBarControllerDelegate {
         viewControllers = [timelineController, searchController, ordersController, profileController]
     }
     
+    override func loadView() {
+        super.loadView()
+        fetchJSONData()
+    }
+    
     // MARK: - Helper Functions
     
     private func configureTabBar() {
@@ -46,7 +51,17 @@ class MainTabBarController: UITabBarController, UITabBarControllerDelegate {
         delegate = self
         tabBar.tintColor = K.Colors.mainAppColor
         tabBar.barTintColor = K.Colors.white
+        tabBar.backgroundColor = K.Colors.white
         tabBar.isTranslucent = false
+        
+        // Remove default top border line from tab bar
+        tabBar.shadowImage = UIImage()
+        tabBar.backgroundImage = UIImage()
+        
+        // Implement my own top border line to circumvent dark mode issues
+        let topLine = UIView(frame: CGRect(x: 0, y: 0, width: K.Layout.screenWidth, height: 1))
+        topLine.backgroundColor = K.Colors.lightGray
+        tabBar.addSubview(topLine)
     }
     
     private func configureNavControllers(vc: UIViewController, title: String, image: UIImage) -> UINavigationController {
@@ -56,11 +71,17 @@ class MainTabBarController: UITabBarController, UITabBarControllerDelegate {
         navController.navigationBar.tintColor = K.Colors.mainAppColor
         navController.navigationBar.barTintColor = K.Colors.white
         navController.navigationBar.isTranslucent = false
+        
+        // Remove default bottom border line from navigation bar
+        navController.navigationBar.shadowImage = UIImage()
+        navController.navigationBar.setBackgroundImage(UIImage(), for: .default)
+        
         return navController
     }
 }
 
 // MARK: - Tapping Timeline Tab Bar Button Again
+
 extension MainTabBarController {
     func tabBarController(_ tabBarController: UITabBarController, shouldSelect viewController: UIViewController) -> Bool {
         // Get view controllers
@@ -72,11 +93,32 @@ extension MainTabBarController {
                let vc = navVC.viewControllers.first as? TimelineViewController {
                 // If the first view controller is currently visible, scroll to top of table view
                 if vc.isViewLoaded && vc.view.window != nil {
-                    print("yes in view")
                     timelineVC.tableView.scrollToRow(at: IndexPath(row: 0, section: 0), at: .top, animated: true)
                 }
             }
         }
         return true
+    }
+}
+
+// MARK: - JSON Data Fetch
+
+extension MainTabBarController {
+    func fetchJSONData() {
+        guard let jsonPath = Bundle.main.path(forResource: K.JSON.timeline, ofType: K.JSON.json) else {
+            Alert.showDefaultAlert(title: K.Alert.errorTitle, message: K.Alert.invalidPathMessage, vc: self)
+            return
+        }
+        
+        let jsonURL = URL(fileURLWithPath: jsonPath)
+        
+        NetworkManager.shared.fetchTimelineTweets(from: jsonURL) { [weak self] result in
+            switch result {
+            case .success(let success):
+                self?.timelineVC.tableView.timelineData = success
+            case .failure(let error):
+                print(error.localizedDescription)
+            }
+        }
     }
 }

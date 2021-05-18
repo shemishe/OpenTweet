@@ -12,6 +12,10 @@ protocol TransitionToTimelineDetailViewControllerDelegate: AnyObject {
     func presentDetailViewController(with timelineTweet: TimelineTweet)
 }
 
+protocol TransitionToUserProfileViewControllerDelegate: AnyObject {
+    func presentUserProfileViewController(with username: String)
+}
+
 protocol AlertDelegate: AnyObject {
     func showAlert(with userToBlock: String)
 }
