@@ -64,6 +64,7 @@ class MainTabBarController: UITabBarController, UITabBarControllerDelegate {
         tabBar.addSubview(topLine)
     }
     
+    // Configuration for all four view controllers in the tab bar
     private func configureNavControllers(vc: UIViewController, title: String, image: UIImage) -> UINavigationController {
         let navController = UINavigationController(rootViewController: vc)
         navController.title = title
@@ -93,7 +94,7 @@ extension MainTabBarController {
                let vc = navVC.viewControllers.first as? TimelineViewController {
                 // If the first view controller is currently visible, scroll to top of table view
                 if vc.isViewLoaded && vc.view.window != nil {
-                    timelineVC.tableView.scrollToRow(at: IndexPath(row: 0, section: 0), at: .top, animated: true)
+                    timelineVC.timelineTableView.scrollToRow(at: IndexPath(row: 0, section: 0), at: .top, animated: true)
                 }
             }
         }
@@ -113,11 +114,15 @@ extension MainTabBarController {
         let jsonURL = URL(fileURLWithPath: jsonPath)
         
         NetworkManager.shared.fetchTimelineTweets(from: jsonURL) { [weak self] result in
+            guard let strongSelf = self else { return }
+            
             switch result {
             case .success(let success):
-                self?.timelineVC.tableView.timelineData = success
+                self?.timelineVC.timelineTableView.timelineData = success
             case .failure(let error):
-                print(error.localizedDescription)
+                Alert.showDefaultAlert(title: K.Alert.errorTitle,
+                                       message: error.localizedDescription,
+                                       vc: strongSelf)
             }
         }
     }

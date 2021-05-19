@@ -12,7 +12,7 @@ class TimelineViewController: UIViewController {
     
     // MARK: - Properties
     
-    let tableView: TimelineTableView = {
+    let timelineTableView: TimelineTableView = {
         let tv = TimelineTableView()
         return tv
     }()
@@ -28,21 +28,21 @@ class TimelineViewController: UIViewController {
     // MARK: - Helper Functions
 
     private func configureTableView() {
-        tableView.transitionToTimelineDetailViewControllerDelegate = self
-        tableView.transitionToUserProfileViewControllerDelegate = self
-        tableView.alertDelegate = self
+        timelineTableView.transitionToTimelineDetailViewControllerDelegate = self
+        timelineTableView.transitionToUserProfileViewControllerDelegate = self
+        timelineTableView.alertDelegate = self
         
-        view.addSubview(tableView)
-        tableView.anchorWithConstant(top: view.safeAreaLayoutGuide.topAnchor,
-                                     bottom: view.safeAreaLayoutGuide.bottomAnchor,
-                                     leading: view.leadingAnchor,
-                                     trailing: view.trailingAnchor,
-                                     paddingTop: 0,
-                                     paddingBottom: 0,
-                                     paddingLeading: 0,
-                                     paddingTrailing: 0,
-                                     width: 0,
-                                     height: 0)
+        view.addSubview(timelineTableView)
+        timelineTableView.anchorWithConstant(top: view.safeAreaLayoutGuide.topAnchor,
+                                             bottom: view.safeAreaLayoutGuide.bottomAnchor,
+                                             leading: view.leadingAnchor,
+                                             trailing: view.trailingAnchor,
+                                             paddingTop: 0,
+                                             paddingBottom: 0,
+                                             paddingLeading: 0,
+                                             paddingTrailing: 0,
+                                             width: 0,
+                                             height: 0)
     }
     
     private func configureNavBar() {
@@ -55,9 +55,10 @@ class TimelineViewController: UIViewController {
 // MARK: - Timeline Detail View Controller Delegate
 
 extension TimelineViewController: TransitionToTimelineDetailViewControllerDelegate {
-    func presentDetailViewController(with timelineTweet: TimelineTweet) {
+    func presentDetailViewController(with timelineTweet: TimelineTweet, with replies: [TimelineTweet]?) {
         let vc = TimelineDetailViewController()
-        vc.timelineTweet = timelineTweet
+        vc.timelineDetailTableView.mainTweet = timelineTweet
+        vc.timelineDetailTableView.replyTweets = replies
         self.navigationController?.pushViewController(vc, animated: true)
     }
 }

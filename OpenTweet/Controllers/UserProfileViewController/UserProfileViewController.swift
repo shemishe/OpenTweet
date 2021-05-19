@@ -12,6 +12,8 @@ class UserProfileViewController: UIViewController {
     
     // MARK: - Properties
     
+    var userProfileView: UserProfileView { return self.view as! UserProfileView }
+    
     var username: String?
     
     // MARK: - Initializers
@@ -22,12 +24,19 @@ class UserProfileViewController: UIViewController {
         configureViewComponents()
     }
     
+    override func loadView() {
+        self.view = UserProfileView(frame: UIScreen.main.bounds)
+    }
+    
     // MARK: - Helper Functions
     
     private func configureNavBar() {
         navigationItem.title = username
     }
+    
     private func configureViewComponents() {
-        view.backgroundColor = .blue
+        if let username = username {
+            userProfileView.usernameLabel.text = "\(username)'s profile"
+        }
     }
 }

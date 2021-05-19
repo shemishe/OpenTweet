@@ -12,7 +12,10 @@ class TimelineDetailViewController: UIViewController {
     
     // MARK: - Properties
     
-    var timelineTweet: TimelineTweet?
+    let timelineDetailTableView: TimelineDetailTableView = {
+        let tv = TimelineDetailTableView()
+        return tv
+    }()
     
     // MARK: - Initializers
     
@@ -20,10 +23,26 @@ class TimelineDetailViewController: UIViewController {
         super.viewDidLoad()
         configureNavBar()
         configureViewComponents()
-        print("this is the tweet \(timelineTweet)")
+        configureTableView()
     }
-    
+
     // MARK: - Helper Functions
+    
+    private func configureTableView() {
+        timelineDetailTableView.transitionToUserProfileViewControllerDelegate = self
+        
+        view.addSubview(timelineDetailTableView)
+        timelineDetailTableView.anchorWithConstant(top: view.safeAreaLayoutGuide.topAnchor,
+                                                   bottom: view.safeAreaLayoutGuide.bottomAnchor,
+                                                   leading: view.leadingAnchor,
+                                                   trailing: view.trailingAnchor,
+                                                   paddingTop: 0,
+                                                   paddingBottom: 0,
+                                                   paddingLeading: 0,
+                                                   paddingTrailing: 0,
+                                                   width: 0,
+                                                   height: 0)
+    }
     
     private func configureViewComponents() {
         view.backgroundColor = K.Colors.white
@@ -34,5 +53,13 @@ class TimelineDetailViewController: UIViewController {
         
         let titleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor.mainRed()]
         navigationController?.navigationBar.titleTextAttributes = titleTextAttributes
+    }
+}
+
+extension TimelineDetailViewController: TransitionToUserProfileViewControllerDelegate {
+    func presentUserProfileViewController(with username: String) {
+        let vc = UserProfileViewController()
+        vc.username = username
+        self.navigationController?.pushViewController(vc, animated: true)
     }
 }

@@ -8,8 +8,8 @@
 
 import UIKit
 
-class TimelineTableView: UITableView {
-    
+class TimelineTableView: UITableView, ContextMenu {
+
     // MARK: - Properties
     
     weak var transitionToTimelineDetailViewControllerDelegate: TransitionToTimelineDetailViewControllerDelegate?
@@ -39,6 +39,7 @@ class TimelineTableView: UITableView {
         backgroundColor = K.Colors.white
         showsVerticalScrollIndicator = false
         
+        // Setting the background color to white
         let bgView = UIView()
         bgView.backgroundColor = K.Colors.white
         backgroundView = bgView
@@ -65,22 +66,23 @@ extension TimelineTableView: UITableViewDelegate, UITableViewDataSource {
         
         if let timelineData = timelineData?.timeline[indexPath.row] {
             let hyperlink = linkCheck(with: timelineData.content)
-            
+            // If no hyperlink exists, dequeue a regular cell, otherwise dequeue custom cell with link preview
             if hyperlink == nil {
                 regularCell.configureCell(with: timelineData)
+                // Closure that returns a button tap action, which then triggers a navigation push to the author's profile page, passing along their @username
                 regularCell.usernameButtonTapped = {
                     self.transitionToUserProfileViewControllerDelegate?.presentUserProfileViewController(with: timelineData.author)
                 }
                 return regularCell
             } else {
                 linkPreviewCell.configureCellWithLinkPreview(with: timelineData, hyperlink: hyperlink)
+                // Closure that returns a button tap action, which then triggers a navigation push to the author's profile page, passing along their @username
                 linkPreviewCell.usernameButtonTapped = {
                     self.transitionToUserProfileViewControllerDelegate?.presentUserProfileViewController(with: timelineData.author)
                 }
                 return linkPreviewCell
             }
         }
-        
         return UITableViewCell()
     }
     
@@ -88,67 +90,38 @@ extension TimelineTableView: UITableViewDelegate, UITableViewDataSource {
         tableView.deselectRow(at: indexPath, animated: false)
         
         if let tweet = timelineData?.timeline[indexPath.row] {
+            
+            // Filter data by matching "inReplyTo" property to tweet's "id" property to see if selected post has a reply
+            let repliesArray = timelineData?.timeline.filter({ $0.inReplyTo == tweet.id })
+
             // Delegate method to trigger tweet detail transition
-            transitionToTimelineDetailViewControllerDelegate?.presentDetailViewController(with: tweet)
+            transitionToTimelineDetailViewControllerDelegate?.presentDetailViewController(with: tweet, with: repliesArray)
         }
     }
 }
 
 // MARK: - Context Menus
+
 extension TimelineTableView {
     func tableView(_ tableView: UITableView, contextMenuConfigurationForRowAt indexPath: IndexPath, point: CGPoint) -> UIContextMenuConfiguration? {
-        
-        let author = timelineData?.timeline[indexPath.row].author
-        
-        let config = UIContextMenuConfiguration(identifier: nil,
-                                                previewProvider: nil) { _ in
-            
-            let likeAction = UIAction(title: "Like", image: K.Icons.like) { _ in
-                print("I LIKE THIS")
-            }
-
-            let followAction = UIAction(title: "Follow", image: K.Icons.follow) { _ in
-                print("I FOLLOWED THIS")
-            }
-            
-            let saveFavoritesAction = UIAction(title: "Save to Favorites", image: K.Icons.saveFavorites) { _ in
-                print("I SAVED THIS")
-            }
-            
-            let blockAction = UIAction(title: "Block", image: K.Icons.block) { [weak self] _ in
-                self?.alertDelegate?.showAlert(with: author ?? "User")
-            }
-            
-            let reportAction  = UIAction(title: "Report this post", image: K.Icons.report) { _ in
-                print("I REPORTED THIS")
-            }
-            
-            let menu = UIMenu(title: "",
-                              image: nil,
-                              identifier: nil,
-                              options: [],
-                              children: [likeAction, followAction, saveFavoritesAction, blockAction, reportAction])
-            
-            return menu
+        // Creating context menus for each row, more details to each action in the protocol
+        return UIContextMenuConfiguration(identifier: nil, previewProvider: nil) { actions in
+            let author = self.timelineData?.timeline[indexPath.row].author
+            return self.configureDefaultContextMenu(blockAuthor: author ?? "User")
         }
-        
-        return config
     }
-//    
-//    func tableView(_ tableView: UITableView, willPerformPreviewActionForMenuWith configuration: UIContextMenuConfiguration, animator: UIContextMenuInteractionCommitAnimating) {
-//        <#code#>
-//    }
 }
 
 // MARK: - Hyperlink Check
 
 extension TimelineTableView {
     private func linkCheck(with contentString: String) -> URL? {
+        // Check for possible URL link
         let type: NSTextCheckingResult.CheckingType = .link
         let linkDetector = try? NSDataDetector(types: type.rawValue)
         
         var hyperlink: URL?
-        
+        // If URL link is detect, return it
         if let detected = linkDetector {
             let matches = detected.matches(in: contentString, options: .reportCompletion, range: NSMakeRange(0, contentString.count))
 

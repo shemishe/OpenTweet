@@ -24,12 +24,6 @@ class NetworkManager {
             let timelineData = try JSONDecoder().decode(TimelineData.self, from: jsonData)
             
             completion(.success(timelineData))
-            
-//            for tweet in timelineData.timeline {
-//                if let avatarURL = tweet.avatar {
-//                    print(avatarURL)
-//                }
-//            }
         } catch {
             completion(.failure(.noDataError))
         }

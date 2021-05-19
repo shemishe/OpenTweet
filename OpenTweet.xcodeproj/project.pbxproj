@@ -32,9 +32,16 @@
 		E9471A302651914E00295FD3 /* TimelineDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9471A2F2651914E00295FD3 /* TimelineDetailViewController.swift */; };
 		E9471A322651936300295FD3 /* Protocols.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9471A312651936300295FD3 /* Protocols.swift */; };
 		E9471A34265228A200295FD3 /* UIImageView+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9471A33265228A200295FD3 /* UIImageView+Extensions.swift */; };
+		E97372942654C65700000761 /* UITextView+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = E97372932654C65700000761 /* UITextView+Extensions.swift */; };
+		E97372962654D13700000761 /* UIButton+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = E97372952654D13700000761 /* UIButton+Extensions.swift */; };
+		E97372982654D18E00000761 /* UILabel+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = E97372972654D18E00000761 /* UILabel+Extensions.swift */; };
+		E973729C2654D5BA00000761 /* UserProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E973729B2654D5BA00000761 /* UserProfileView.swift */; };
+		E973729F2654D93A00000761 /* TimelineDetailTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E973729E2654D93A00000761 /* TimelineDetailTableViewCell.swift */; };
+		E97372A12654DE0B00000761 /* TimelineDetailTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E97372A02654DE0B00000761 /* TimelineDetailTableView.swift */; };
 		E9AA503A2653724800C3CFA5 /* NetworkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9AA50392653724800C3CFA5 /* NetworkManager.swift */; };
 		E9AA503C2653779000C3CFA5 /* JSONError.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9AA503B2653779000C3CFA5 /* JSONError.swift */; };
 		E9AA503F26538C0400C3CFA5 /* UserProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9AA503E26538C0400C3CFA5 /* UserProfileViewController.swift */; };
+		E9CCF97426538FBB004AFBDC /* ContextMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9CCF97326538FBB004AFBDC /* ContextMenu.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -87,9 +94,16 @@
 		E9471A2F2651914E00295FD3 /* TimelineDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimelineDetailViewController.swift; sourceTree = "<group>"; };
 		E9471A312651936300295FD3 /* Protocols.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Protocols.swift; sourceTree = "<group>"; };
 		E9471A33265228A200295FD3 /* UIImageView+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImageView+Extensions.swift"; sourceTree = "<group>"; };
+		E97372932654C65700000761 /* UITextView+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITextView+Extensions.swift"; sourceTree = "<group>"; };
+		E97372952654D13700000761 /* UIButton+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIButton+Extensions.swift"; sourceTree = "<group>"; };
+		E97372972654D18E00000761 /* UILabel+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UILabel+Extensions.swift"; sourceTree = "<group>"; };
+		E973729B2654D5BA00000761 /* UserProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserProfileView.swift; sourceTree = "<group>"; };
+		E973729E2654D93A00000761 /* TimelineDetailTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimelineDetailTableViewCell.swift; sourceTree = "<group>"; };
+		E97372A02654DE0B00000761 /* TimelineDetailTableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimelineDetailTableView.swift; sourceTree = "<group>"; };
 		E9AA50392653724800C3CFA5 /* NetworkManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkManager.swift; sourceTree = "<group>"; };
 		E9AA503B2653779000C3CFA5 /* JSONError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JSONError.swift; sourceTree = "<group>"; };
 		E9AA503E26538C0400C3CFA5 /* UserProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserProfileViewController.swift; sourceTree = "<group>"; };
+		E9CCF97326538FBB004AFBDC /* ContextMenu.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContextMenu.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -192,6 +206,7 @@
 				E9471A312651936300295FD3 /* Protocols.swift */,
 				E9AA50392653724800C3CFA5 /* NetworkManager.swift */,
 				E9AA503B2653779000C3CFA5 /* JSONError.swift */,
+				E9CCF97326538FBB004AFBDC /* ContextMenu.swift */,
 			);
 			path = Utilities;
 			sourceTree = "<group>";
@@ -202,6 +217,9 @@
 				E94719D9265090F300295FD3 /* UIView+Extensions.swift */,
 				E9471A27265098C700295FD3 /* UIColor+Extensions.swift */,
 				E9471A33265228A200295FD3 /* UIImageView+Extensions.swift */,
+				E97372932654C65700000761 /* UITextView+Extensions.swift */,
+				E97372952654D13700000761 /* UIButton+Extensions.swift */,
+				E97372972654D18E00000761 /* UILabel+Extensions.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -217,9 +235,9 @@
 		E94719D3265090A100295FD3 /* Views */ = {
 			isa = PBXGroup;
 			children = (
-				E94719DD2650911D00295FD3 /* TimelineTableView.swift */,
-				E94719DF2650912F00295FD3 /* TimelineTableViewCell.swift */,
-				E9471A2B2650EDCC00295FD3 /* TimelineLinkPreviewTableViewCell.swift */,
+				E973729A2654D5A200000761 /* UserProfileView */,
+				E97372992654D59500000761 /* TimelineView */,
+				E973729D2654D92F00000761 /* TimelineDetailView */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -252,6 +270,33 @@
 				E9471A2F2651914E00295FD3 /* TimelineDetailViewController.swift */,
 			);
 			path = TimelineDetailViewController;
+			sourceTree = "<group>";
+		};
+		E97372992654D59500000761 /* TimelineView */ = {
+			isa = PBXGroup;
+			children = (
+				E94719DD2650911D00295FD3 /* TimelineTableView.swift */,
+				E94719DF2650912F00295FD3 /* TimelineTableViewCell.swift */,
+				E9471A2B2650EDCC00295FD3 /* TimelineLinkPreviewTableViewCell.swift */,
+			);
+			path = TimelineView;
+			sourceTree = "<group>";
+		};
+		E973729A2654D5A200000761 /* UserProfileView */ = {
+			isa = PBXGroup;
+			children = (
+				E973729B2654D5BA00000761 /* UserProfileView.swift */,
+			);
+			path = UserProfileView;
+			sourceTree = "<group>";
+		};
+		E973729D2654D92F00000761 /* TimelineDetailView */ = {
+			isa = PBXGroup;
+			children = (
+				E97372A02654DE0B00000761 /* TimelineDetailTableView.swift */,
+				E973729E2654D93A00000761 /* TimelineDetailTableViewCell.swift */,
+			);
+			path = TimelineDetailView;
 			sourceTree = "<group>";
 		};
 		E9AA503D26538BF300C3CFA5 /* UserProfileViewController */ = {
@@ -401,18 +446,25 @@
 			buildActionMask = 2147483647;
 			files = (
 				E94719E02650912F00295FD3 /* TimelineTableViewCell.swift in Sources */,
+				E973729C2654D5BA00000761 /* UserProfileView.swift in Sources */,
 				E9471A222650973F00295FD3 /* SearchViewController.swift in Sources */,
+				E9CCF97426538FBB004AFBDC /* ContextMenu.swift in Sources */,
 				E94719DE2650911D00295FD3 /* TimelineTableView.swift in Sources */,
 				E9471A322651936300295FD3 /* Protocols.swift in Sources */,
 				E9471A202650963F00295FD3 /* MainTabBarController.swift in Sources */,
 				E9471A34265228A200295FD3 /* UIImageView+Extensions.swift in Sources */,
+				E97372942654C65700000761 /* UITextView+Extensions.swift in Sources */,
 				E94719E22650929F00295FD3 /* SceneDelegate.swift in Sources */,
 				E94719D6265090D000295FD3 /* Alert.swift in Sources */,
 				009C4C6E1D9F0CD600F0BC6C /* TimelineViewController.swift in Sources */,
 				E9AA503F26538C0400C3CFA5 /* UserProfileViewController.swift in Sources */,
 				E9471A242650975500295FD3 /* OrderViewController.swift in Sources */,
+				E97372962654D13700000761 /* UIButton+Extensions.swift in Sources */,
 				E94719DA265090F300295FD3 /* UIView+Extensions.swift in Sources */,
+				E97372A12654DE0B00000761 /* TimelineDetailTableView.swift in Sources */,
+				E973729F2654D93A00000761 /* TimelineDetailTableViewCell.swift in Sources */,
 				E9471A2A2650A51F00295FD3 /* DateFormatter.swift in Sources */,
+				E97372982654D18E00000761 /* UILabel+Extensions.swift in Sources */,
 				E9AA503A2653724800C3CFA5 /* NetworkManager.swift in Sources */,
 				E94719DC265090FD00295FD3 /* Models.swift in Sources */,
 				E9471A2C2650EDCC00295FD3 /* TimelineLinkPreviewTableViewCell.swift in Sources */,

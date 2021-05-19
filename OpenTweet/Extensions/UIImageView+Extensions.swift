@@ -14,7 +14,7 @@ extension UIImageView {
     func downloadImage(from url: URL) {
         URLSession.shared.dataTask(with: url) { data, response, error in
             guard let data = data, error == nil else {
-                print("error handling for avatar image")
+                print("Error when loading image data")
                 return
             }
             
@@ -23,5 +23,15 @@ extension UIImageView {
                 self.image = image
             }
         }.resume()
+    }
+    
+    func configureAvatarImageView() -> UIImageView {
+        let iv = UIImageView()
+        iv.contentMode = .scaleAspectFit
+        iv.backgroundColor = K.Colors.white
+        iv.layer.borderWidth = 1
+        iv.layer.borderColor = K.Colors.mainAppColor.cgColor
+        iv.clipsToBounds = true
+        return iv
     }
 }

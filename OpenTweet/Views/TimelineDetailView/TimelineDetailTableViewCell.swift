@@ -1,54 +1,38 @@
 //
-//  TimelineLinkPreviewTableViewCell.swift
+//  TimelineDetailTableViewCell.swift
 //  OpenTweet
 //
-//  Created by Sherman Shi on 5/15/21.
+//  Created by Sherman Shi on 5/18/21.
 //  Copyright © 2021 OpenTable, Inc. All rights reserved.
 //
 
 import UIKit
 import LinkPresentation
 
-class TimelineLinkPreviewTableViewCell: UITableViewCell {
+class TimelineDetailTableViewCell: UITableViewCell {
     
-    static let reuseIdentifier = "TimelineLinkPreviewTableViewCell"
+    static let reuseIdentifier = "TimelineDetailTableViewCell"
     
     // MARK: - Properties
     
     lazy var avatar: UIImageView = {
         let iv = UIImageView()
-        iv.contentMode = .scaleAspectFit
-        iv.backgroundColor = K.Colors.white
-        iv.layer.borderWidth = 1
-        iv.layer.borderColor = K.Colors.mainAppColor.cgColor
-        iv.clipsToBounds = true
-        return iv
+        return iv.configureAvatarImageView()
     }()
     
     lazy var usernameButton: UIButton = {
         let button = UIButton()
-        button.setTitleColor(K.Colors.mainAppColor, for: .normal)
-        button.contentHorizontalAlignment = .left
-        button.contentEdgeInsets = UIEdgeInsets(top: 0, left: 0.001, bottom: 0.001, right: 0)
-        return button
+        return button.configureUsernameButton()
     }()
     
     lazy var timestamp: UILabel = {
         let label = UILabel()
-        label.textColor = K.Colors.black
-        return label
+        return label.configureTimestampLabel()
     }()
     
-    lazy var content: UILabel = {
-        let label = UILabel()
-        label.textColor = K.Colors.black
-        label.numberOfLines = 0
-        return label
-    }()
-    
-    lazy var linkPreview: LPLinkView = {
-        let lp = LPLinkView()
-        return lp
+    lazy var content: UITextView = {
+        let tv = UITextView()
+        return tv.configureContentTextView(fontSize: 22)
     }()
     
     // MARK: - Closures
@@ -67,6 +51,10 @@ class TimelineLinkPreviewTableViewCell: UITableViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
+    override func prepareForReuse() {
+        super.prepareForReuse()
+    }
+    
     // MARK: - Helper Functions
     
     func configureButtonActions() {
@@ -75,16 +63,23 @@ class TimelineLinkPreviewTableViewCell: UITableViewCell {
     
     private func configureViewCellComponents() {
         backgroundColor = K.Colors.white
+        
+        // Set a custom selection color
+        let backgroundView = UIView()
+        backgroundView.backgroundColor = K.Colors.lightGray
+        selectedBackgroundView = backgroundView
 
         let defaultPadding = K.Layout.defaultSidePadding()
         let halfPadding: CGFloat = 8
         let minimumPadding: CGFloat = 4
         let avatarSize: CGFloat = 50
         
+        // Auto-Layout constraints
+        
         contentView.addSubview(avatar)
-        avatar.anchorWithConstant(top: contentView.topAnchor,
+        avatar.anchorWithConstant(top:  contentView.topAnchor,
                                   bottom: nil,
-                                  leading: contentView.leadingAnchor,
+                                  leading:  contentView.leadingAnchor,
                                   trailing: nil,
                                   paddingTop: halfPadding,
                                   paddingBottom: 0,
@@ -98,7 +93,7 @@ class TimelineLinkPreviewTableViewCell: UITableViewCell {
         usernameButton.anchorWithConstant(top: avatar.topAnchor,
                                           bottom: nil,
                                           leading: avatar.trailingAnchor,
-                                          trailing: contentView.trailingAnchor,
+                                          trailing:  contentView.trailingAnchor,
                                           paddingTop: 0,
                                           paddingBottom: 0,
                                           paddingLeading: halfPadding,
@@ -120,37 +115,27 @@ class TimelineLinkPreviewTableViewCell: UITableViewCell {
         
         contentView.addSubview(content)
         content.anchorWithConstant(top: timestamp.bottomAnchor,
-                                   bottom: nil,
-                                   leading: usernameButton.leadingAnchor,
+                                   bottom:  contentView.bottomAnchor,
+                                   leading: avatar.leadingAnchor,
                                    trailing: usernameButton.trailingAnchor,
-                                   paddingTop: minimumPadding,
-                                   paddingBottom: 0,
+                                   paddingTop: defaultPadding,
+                                   paddingBottom: halfPadding,
                                    paddingLeading: 0,
                                    paddingTrailing: 0,
                                    width: 0,
                                    height: 0)
-        
-        contentView.addSubview(linkPreview)
-        linkPreview.anchorWithConstant(top: content.bottomAnchor,
-                                       bottom: contentView.bottomAnchor,
-                                       leading: usernameButton.leadingAnchor,
-                                       trailing: usernameButton.trailingAnchor,
-                                       paddingTop: halfPadding,
-                                       paddingBottom: halfPadding,
-                                       paddingLeading: 0,
-                                       paddingTrailing: 0,
-                                       width: 0,
-                                       height: 250)
     }
 }
 
-/* Cell configuration with timeline tweet data */
-extension TimelineLinkPreviewTableViewCell {
-    func configureCellWithLinkPreview(with timelineTweet: TimelineTweet, hyperlink: URL?) {
+// MARK: - Cell Configuration With Timeline Data
+
+extension TimelineDetailTableViewCell {
+    
+    func configureCell(with timelineTweet: TimelineTweet) {
         usernameButton.setTitle(timelineTweet.author, for: .normal)
-//        username.text = timelineTweet.author
         timestamp.text = timestampConverter(timestamp: timelineTweet.date)
         content.text = timelineTweet.content
+        content.highlightMentions()
         
         // If timeline tweet data contains avatar data, parse image data, otherwise use default image
         if timelineTweet.avatar != nil {
@@ -160,30 +145,15 @@ extension TimelineLinkPreviewTableViewCell {
         } else {
             avatar.image = K.Images.openTable
         }
-        
-        // Fetching metadata from hyperlink to present a Link Preview
-        if let hyperlink = hyperlink {
-            let linkPreview = LPLinkView()
-            let provider = LPMetadataProvider()
-            provider.startFetchingMetadata(for: hyperlink) { metadata, error in
-                guard let data = metadata, error == nil else {
-                    print("error handling for link preview")
-                    return
-                }
-                
-                DispatchQueue.main.async {
-                    linkPreview.metadata = data
-                    print(data)
-                }
-            }
-        }
     }
 }
 
 // MARK: - Selectors
 
-extension TimelineLinkPreviewTableViewCell {
+extension TimelineDetailTableViewCell {
     @objc func handleUsernameButtonTapped() {
         usernameButtonTapped?()
     }
 }
+
+

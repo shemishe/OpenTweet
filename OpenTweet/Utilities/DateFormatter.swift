@@ -14,7 +14,7 @@ public func timestampConverter(timestamp: String) -> String {
     let dateString = dateFormatter.date(from: timestamp)
     
     let timestampFormatter = DateFormatter()
-    timestampFormatter.dateFormat = "MM-dd-yyyy \u{2022} HH:mm:ss"
+    timestampFormatter.dateFormat = "MM/dd/yyyy \u{2022} HH:mm:ss"
     timestampFormatter.locale = Locale(identifier: "en_US_POSIX")
     
     if let dateString = dateString {
