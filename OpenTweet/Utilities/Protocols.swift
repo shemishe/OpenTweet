@@ -9,7 +9,7 @@
 import Foundation
 
 protocol TransitionToTimelineDetailViewControllerDelegate: AnyObject {
-    func presentDetailViewController(with timelineTweet: TimelineTweet, with replies: [TimelineTweet]?)
+    func presentDetailViewController(with detailedTimelineTweet: [TimelineTweet])
 }
 
 protocol TransitionToUserProfileViewControllerDelegate: AnyObject {

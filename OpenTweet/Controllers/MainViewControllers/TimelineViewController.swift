@@ -55,10 +55,9 @@ class TimelineViewController: UIViewController {
 // MARK: - Timeline Detail View Controller Delegate
 
 extension TimelineViewController: TransitionToTimelineDetailViewControllerDelegate {
-    func presentDetailViewController(with timelineTweet: TimelineTweet, with replies: [TimelineTweet]?) {
+    func presentDetailViewController(with detailedTimelineTweet: [TimelineTweet]) {
         let vc = TimelineDetailViewController()
-        vc.timelineDetailTableView.mainTweet = timelineTweet
-        vc.timelineDetailTableView.replyTweets = replies
+        vc.timelineDetailTableView.detailedTimelineData = detailedTimelineTweet
         self.navigationController?.pushViewController(vc, animated: true)
     }
 }

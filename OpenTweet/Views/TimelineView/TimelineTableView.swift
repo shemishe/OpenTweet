@@ -91,11 +91,23 @@ extension TimelineTableView: UITableViewDelegate, UITableViewDataSource {
         
         if let tweet = timelineData?.timeline[indexPath.row] {
             
+            var detailedTimelineTweet = [TimelineTweet]()
+            
             // Filter data by matching "inReplyTo" property to tweet's "id" property to see if selected post has a reply
-            let repliesArray = timelineData?.timeline.filter({ $0.inReplyTo == tweet.id })
+            // If post has a reply, append to the array placeholder above
+            if let repliesArray = timelineData?.timeline.filter({ $0.inReplyTo == tweet.id }) {
+                detailedTimelineTweet.append(tweet)
+                detailedTimelineTweet.append(contentsOf: repliesArray)
+            }
+            
+            // Locate the main tweet of the selected tweet, if there is one, append to the beginning of the array placeholder
+            // Otherwise if none, this will be skipped
+            if let mainTweet = timelineData?.timeline.first(where: { $0.id == tweet.inReplyTo }) {
+                detailedTimelineTweet.insert(mainTweet, at: 0)
+            }
 
             // Delegate method to trigger tweet detail transition
-            transitionToTimelineDetailViewControllerDelegate?.presentDetailViewController(with: tweet, with: repliesArray)
+            transitionToTimelineDetailViewControllerDelegate?.presentDetailViewController(with: detailedTimelineTweet)
         }
     }
 }

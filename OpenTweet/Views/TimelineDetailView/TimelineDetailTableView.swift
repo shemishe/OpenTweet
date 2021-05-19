@@ -22,6 +22,8 @@ class TimelineDetailTableView: UITableView {
     var mainTweet: TimelineTweet?
     var replyTweets: [TimelineTweet]?
     
+    var detailedTimelineData: [TimelineTweet]?
+    
     // MARK: - Initializers
     
     override init(frame: CGRect, style: UITableView.Style) {
@@ -60,29 +62,20 @@ class TimelineDetailTableView: UITableView {
 
 extension TimelineDetailTableView: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 1 + (replyTweets?.count ?? 0)
+        return detailedTimelineData?.count ?? 0
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let mainCell = tableView.dequeueReusableCell(withIdentifier: TimelineDetailTableViewCell.reuseIdentifier, for: indexPath) as! TimelineDetailTableViewCell
-        let threadIndex = TweetThread(rawValue: indexPath.row)
         
-        if let mainTweet = mainTweet,
-           let replyTweets = replyTweets {
-            switch threadIndex {
-            case .MainTweet:
-                mainCell.configureCell(with: mainTweet)
-                mainCell.usernameButtonTapped = {
-                    self.transitionToUserProfileViewControllerDelegate?.presentUserProfileViewController(with: mainTweet.author)
-                }
-            case .none:
-                mainCell.configureCell(with: replyTweets[indexPath.row - 1])
-                mainCell.usernameButtonTapped = {
-                    self.transitionToUserProfileViewControllerDelegate?.presentUserProfileViewController(with: replyTweets[indexPath.row - 1].author)
-                }
+        if let tweetDetail = detailedTimelineData?[indexPath.row] {
+            mainCell.configureCell(with: tweetDetail)
+            mainCell.usernameButtonTapped = {
+                self.transitionToUserProfileViewControllerDelegate?.presentUserProfileViewController(with: tweetDetail.author)
             }
+            return mainCell
         }
-        return mainCell
+        return UITableViewCell()
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
