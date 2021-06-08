@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import Combine
 
 class MainTabBarController: UITabBarController, UITabBarControllerDelegate {
     
@@ -16,6 +17,8 @@ class MainTabBarController: UITabBarController, UITabBarControllerDelegate {
     private var searchVC = SearchViewController()
     private var ordersVC = OrderViewController()
     private var profileVC = ProfileViewController()
+    
+    var subscriber: AnyCancellable?
     
     // MARK: - Initializers
     
@@ -113,17 +116,29 @@ extension MainTabBarController {
         
         let jsonURL = URL(fileURLWithPath: jsonPath)
         
-        NetworkManager.shared.fetchTimelineTweets(from: jsonURL) { [weak self] result in
-            guard let strongSelf = self else { return }
-            
-            switch result {
-            case .success(let success):
-                self?.timelineVC.timelineTableView.timelineData = success
-            case .failure(let error):
-                Alert.showDefaultAlert(title: K.Alert.errorTitle,
-                                       message: error.localizedDescription,
-                                       vc: strongSelf)
-            }
-        }
+        self.subscriber = NetworkManager.shared.fetchTimeline(from: jsonURL)
+            .sink(receiveCompletion: { completion in
+                switch completion {
+                case .finished:
+                    print("Finished!")
+                case .failure(let error):
+                    print(error.localizedDescription)
+                }
+            }, receiveValue: { [weak self] timelineDataValues in
+                self?.timelineVC.timelineTableView.timelineData = timelineDataValues
+            })
+        
+//        NetworkManager.shared.fetchTimelineTweets(from: jsonURL) { [weak self] result in
+//            guard let strongSelf = self else { return }
+//
+//            switch result {
+//            case .success(let success):
+//                self?.timelineVC.timelineTableView.timelineData = success
+//            case .failure(let error):
+//                Alert.showDefaultAlert(title: K.Alert.errorTitle,
+//                                       message: error.localizedDescription,
+//                                       vc: strongSelf)
+//            }
+//        }
     }
 }

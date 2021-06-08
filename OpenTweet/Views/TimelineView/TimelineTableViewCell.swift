@@ -139,7 +139,9 @@ extension TimelineTableViewCell {
             guard let avatarURL = URL(string: avatarURLString) else { return }
             avatar.downloadImage(from: avatarURL)
         } else {
-            avatar.image = K.Images.openTable
+            DispatchQueue.main.async {
+                self.avatar.image = K.Images.openTable
+            }
         }
     }
 }
